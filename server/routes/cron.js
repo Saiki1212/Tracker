@@ -3,7 +3,12 @@
  * shared CRON_SECRET passed as a Bearer token by Vercel Cron.
  *
  *   Vercel Cron config (in vercel.json):
- *     { "path": "/api/cron/send-reminders", "schedule": "0 * * * *" }
+ *     { "path": "/api/cron/send-reminders", "schedule": "0 9 * * *" }
+ *
+ *   Vercel HOBBY plan only allows once-per-day crons; any more-frequent
+ *   expression fails at deploy time. Upgrade to Pro for hourly/minutely.
+ *   The handler is idempotent — running once a day catches every reminder
+ *   whose nextReminderAt has passed since the previous run.
  *
  * Vercel automatically sets `Authorization: Bearer ${CRON_SECRET}` on the
  * outbound request when an env var named CRON_SECRET exists in the project.
