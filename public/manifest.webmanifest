@@ -1,0 +1,14 @@
+{
+  "name": "Forge",
+  "short_name": "Forge",
+  "description": "Personal engineering career operating system",
+  "start_url": "/app.html",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0A0B0F",
+  "theme_color": "#0A0B0F",
+  "orientation": "any",
+  "icons": [
+    { "src": "/assets/logo.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

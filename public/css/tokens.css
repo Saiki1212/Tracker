@@ -1,0 +1,91 @@
+/* Design tokens — Linear/Vercel/Stripe-inspired dark dev dashboard */
+:root {
+  /* Surfaces */
+  --bg-0: #0A0B0F;
+  --bg-1: #0F1117;
+  --bg-2: #151823;
+  --bg-3: #1B1F2C;
+  --bg-glass: rgba(255, 255, 255, 0.03);
+  --bg-glass-2: rgba(255, 255, 255, 0.05);
+
+  /* Borders */
+  --border: #1F2330;
+  --border-strong: #2A3040;
+  --border-bright: #3A4156;
+
+  /* Text */
+  --text-0: #E6E8EE;
+  --text-1: #A0A6B8;
+  --text-2: #6B7184;
+  --text-3: #4A4F60;
+
+  /* Accents */
+  --accent: #7C5CFF;
+  --accent-2: #22D3EE;
+  --accent-3: #F472B6;
+
+  /* Semantic */
+  --ok: #10B981;
+  --warn: #F59E0B;
+  --bad: #EF4444;
+  --info: #3B82F6;
+
+  /* Status pills */
+  --status-wishlist: #6B7184;
+  --status-applied: #3B82F6;
+  --status-oa: #8B5CF6;
+  --status-interviewing: #F59E0B;
+  --status-rejected: #EF4444;
+  --status-offer: #10B981;
+
+  /* Typography */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* Sizing */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* Effects */
+  --shadow-glass: 0 1px 0 rgba(255,255,255,0.04) inset, 0 8px 24px rgba(0,0,0,0.35);
+  --shadow-pop: 0 12px 32px rgba(0,0,0,0.55), 0 1px 0 rgba(255,255,255,0.05) inset;
+  --ring: 0 0 0 1px var(--accent);
+
+  /* Layout */
+  --sidebar-w: 232px;
+  --sidebar-w-collapsed: 60px;
+  --topbar-h: 56px;
+  --bottom-nav-h: 60px;
+
+  /* Z */
+  --z-sidebar: 30;
+  --z-topbar: 40;
+  --z-modal: 100;
+  --z-toast: 200;
+
+  /* Safe area (iOS) */
+  --safe-top: env(safe-area-inset-top, 0);
+  --safe-bottom: env(safe-area-inset-bottom, 0);
+  --safe-left: env(safe-area-inset-left, 0);
+  --safe-right: env(safe-area-inset-right, 0);
+}
+
+/* Breakpoints (used in @media) */
+/*
+  --bp-sm: 640px
+  --bp-md: 1024px
+  --bp-lg: 1440px
+*/

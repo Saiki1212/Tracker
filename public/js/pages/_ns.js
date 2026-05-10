@@ -1,0 +1,1 @@
+window.pages = window.pages || {};

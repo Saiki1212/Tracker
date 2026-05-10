@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0A0B0F">
+  <meta name="color-scheme" content="dark">
+  <title>Forge — Sign in</title>
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="/assets/logo.svg">
+  <link rel="apple-touch-icon" href="/assets/logo.svg">
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/animations.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <style>
+    .login-shell {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+    .login-card {
+      width: 100%;
+      max-width: 380px;
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+    }
+    .login-card::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: var(--radius-lg);
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(124, 92, 255, 0.5), rgba(34, 211, 238, 0.4), rgba(124, 92, 255, 0));
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+              mask-composite: exclude;
+      pointer-events: none;
+      opacity: 0.7;
+    }
+    .login-aura {
+      position: fixed;
+      width: 480px; height: 480px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(124, 92, 255, 0.18), transparent 60%);
+      filter: blur(20px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .login-aura.a1 { top: -120px; right: -120px; }
+    .login-aura.a2 {
+      bottom: -160px; left: -120px;
+      background: radial-gradient(circle, rgba(34, 211, 238, 0.14), transparent 60%);
+    }
+    .login-shell { position: relative; }
+    .login-shell > .card { position: relative; z-index: 1; }
+    .login-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .login-brand .brand-mark {
+      width: 36px; height: 36px;
+      font-size: 16px;
+    }
+    .login-title { font-size: 20px; margin-bottom: 4px; }
+    .login-sub { color: var(--text-2); font-size: 13px; margin-bottom: 24px; }
+    .err {
+      color: var(--bad);
+      font-size: 13px;
+      margin-top: 8px;
+      min-height: 18px;
+    }
+    .login-foot { font-size: 11px; color: var(--text-3); text-align: center; margin-top: 22px; }
+    .login-foot code { color: var(--text-2); }
+    @media (max-width: 640px) {
+      .login-card { padding: 22px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="login-shell">
+    <div class="login-aura a1"></div>
+    <div class="login-aura a2"></div>
+    <form class="card login-card" id="loginForm" autocomplete="on">
+      <div class="login-brand">
+        <div class="brand-mark">F</div>
+        <div>
+          <div class="brand-name" style="font-size: 16px;">Forge</div>
+          <div style="font-size: 11px; color: var(--text-2); font-family: var(--font-mono);">v0.1.0</div>
+        </div>
+      </div>
+      <h1 class="login-title">Sign in</h1>
+      <p class="login-sub">Operator console for your career trajectory.</p>
+
+      <div class="field">
+        <label for="email">Email</label>
+        <input class="input" type="email" id="email" name="email" autocomplete="email" required>
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input class="input" type="password" id="password" name="password" autocomplete="current-password" required>
+      </div>
+      <button class="btn btn-primary btn-lg" type="submit" style="width: 100%;" id="submitBtn">
+        <span id="submitLabel">Sign in</span>
+      </button>
+      <div class="err" id="err"></div>
+
+      <div class="login-foot">
+        Single-operator instance. Run <code>npm run seed</code> if you haven't yet.
+      </div>
+    </form>
+  </main>
+
+  <script>
+    // If already logged in, go straight to app
+    if (localStorage.getItem('forge.token')) {
+      location.replace('/app.html');
+    }
+
+    const form = document.getElementById('loginForm');
+    const errEl = document.getElementById('err');
+    const submitBtn = document.getElementById('submitBtn');
+    const submitLabel = document.getElementById('submitLabel');
+
+    // Entrance animation (waits briefly for GSAP since it's deferred)
+    function animateIn() {
+      if (!window.gsap || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+      tl.from('.login-aura', { scale: 0.6, opacity: 0, duration: 1.1, stagger: 0.1, ease: 'power2.out' }, 0)
+        .from('.login-card', { y: 24, opacity: 0, scale: 0.97, duration: 0.55, ease: 'back.out(1.4)' }, 0.1)
+        .from('.login-brand', { y: -8, opacity: 0, duration: 0.4 }, 0.35)
+        .from('.login-title', { y: 8, opacity: 0, duration: 0.35 }, 0.45)
+        .from('.login-sub', { y: 8, opacity: 0, duration: 0.35 }, 0.5)
+        .from('#loginForm .field', { y: 12, opacity: 0, duration: 0.35, stagger: 0.07 }, 0.55)
+        .from('#submitBtn', { y: 12, opacity: 0, duration: 0.35 }, 0.75)
+        .from('.login-foot', { opacity: 0, duration: 0.4 }, 0.85);
+    }
+    let tries = 0;
+    const wait = setInterval(() => {
+      if (window.gsap || ++tries > 30) { clearInterval(wait); animateIn(); }
+    }, 50);
+
+    // Subtle parallax on aura with mouse
+    document.addEventListener('mousemove', (e) => {
+      if (!window.gsap || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const x = (e.clientX / window.innerWidth - 0.5) * 20;
+      const y = (e.clientY / window.innerHeight - 0.5) * 20;
+      gsap.to('.login-aura.a1', { x: x, y: y, duration: 1, ease: 'power2.out' });
+      gsap.to('.login-aura.a2', { x: -x, y: -y, duration: 1, ease: 'power2.out' });
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errEl.textContent = '';
+      submitBtn.disabled = true;
+      submitLabel.textContent = 'Signing in…';
+      try {
+        const r = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: form.email.value.trim(),
+            password: form.password.value,
+          }),
+        });
+        const data = await r.json();
+        if (!r.ok) throw new Error(data.error || 'Login failed');
+        localStorage.setItem('forge.token', data.token);
+        localStorage.setItem('forge.user', JSON.stringify(data.user));
+        location.replace('/app.html');
+      } catch (err) {
+        errEl.textContent = err.message;
+        submitBtn.disabled = false;
+        submitLabel.textContent = 'Sign in';
+        if (window.gsap) {
+          gsap.fromTo('.login-card', { x: -10 }, { x: 0, duration: 0.5, ease: 'elastic.out(1, 0.4)' });
+        }
+      }
+    });
+  </script>
+</body>
+</html>

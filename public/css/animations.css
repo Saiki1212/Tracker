@@ -1,0 +1,248 @@
+/* AOS overrides for our dark theme */
+[data-aos] { transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }
+
+/* ============ Keyframes ============ */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slideRight { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes pop { from { opacity: 0; transform: scale(0.94); } to { opacity: 1; transform: scale(1); } }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(124, 92, 255, 0); }
+  50%      { box-shadow: 0 0 0 8px rgba(124, 92, 255, 0.18); }
+}
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@keyframes shineSweep {
+  0%   { transform: translateX(-100%) skewX(-20deg); }
+  100% { transform: translateX(220%) skewX(-20deg); }
+}
+@keyframes ringSpin {
+  to { transform: rotate(360deg); }
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.45; }
+}
+@keyframes ripple {
+  to { transform: scale(2.4); opacity: 0; }
+}
+
+/* ============ Utility classes ============ */
+.fade-in { animation: fadeIn 0.3s ease both; }
+.slide-up { animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) both; }
+.slide-right { animation: slideRight 0.3s cubic-bezier(0.4, 0, 0.2, 1) both; }
+.pop { animation: pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+.float-anim { animation: float 4s ease-in-out infinite; }
+
+/* ============ Stagger fallback (used until GSAP attaches) ============ */
+.view-enter > * {
+  animation: slideUp 0.42s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+.view-enter > *:nth-child(1) { animation-delay: 0.02s; }
+.view-enter > *:nth-child(2) { animation-delay: 0.07s; }
+.view-enter > *:nth-child(3) { animation-delay: 0.12s; }
+.view-enter > *:nth-child(4) { animation-delay: 0.17s; }
+.view-enter > *:nth-child(5) { animation-delay: 0.22s; }
+.view-enter > *:nth-child(6) { animation-delay: 0.27s; }
+.view-enter > *:nth-child(7) { animation-delay: 0.32s; }
+
+/* ============ Brand mark animated gradient ============ */
+.brand-mark {
+  background-size: 220% 220% !important;
+  animation: gradientShift 9s ease infinite;
+}
+
+/* ============ Buttons: shine sweep on hover ============ */
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.22) 50%, transparent 70%);
+  transform: translateX(-100%) skewX(-20deg);
+  pointer-events: none;
+  z-index: 1;
+}
+.btn-primary:hover::after {
+  animation: shineSweep 0.85s ease-out;
+}
+
+/* ============ Card hover glow (subtle) ============ */
+@media (hover: hover) {
+  .card.hoverable {
+    transition: border-color 0.18s ease, box-shadow 0.25s ease, background 0.18s ease;
+  }
+  .card.hoverable:hover {
+    border-color: rgba(124, 92, 255, 0.35);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.05) inset,
+      0 12px 36px rgba(0, 0, 0, 0.45),
+      0 0 0 1px rgba(124, 92, 255, 0.12);
+  }
+
+  .kanban-card {
+    transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.2s ease;
+  }
+  .kanban-card:hover {
+    border-color: var(--border-bright);
+    background: var(--bg-3);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+  }
+}
+
+/* ============ Nav link active indicator (animated) ============ */
+.nav { position: relative; }
+.nav-indicator {
+  position: absolute;
+  left: 4px;
+  width: 2px;
+  background: linear-gradient(180deg, var(--accent), var(--accent-2));
+  border-radius: 2px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  box-shadow: 0 0 12px rgba(124, 92, 255, 0.45);
+}
+/* Hide CSS pseudo so the JS indicator is the only one shown */
+.nav-link.active::before { display: none; }
+.nav-link {
+  transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
+}
+.nav-link:hover { transform: translateX(2px); }
+
+/* ============ Bottom nav active indicator ============ */
+.bottom-nav a {
+  position: relative;
+  transition: color 0.18s ease;
+}
+.bottom-nav a.active::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  width: 24px;
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  transform: translateX(-50%);
+  animation: pop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  box-shadow: 0 0 10px rgba(124, 92, 255, 0.4);
+}
+
+/* ============ Status pill active "interviewing" gentle pulse ============ */
+.status-pill.status-Interviewing::before {
+  animation: blink 2.4s ease-in-out infinite;
+}
+.status-pill.status-Offer {
+  animation: glowPulse 3s ease-in-out infinite;
+}
+
+/* ============ Inputs: focus ring lift ============ */
+.input, .textarea, .select {
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease,
+    transform 0.18s ease;
+}
+.input:focus, .textarea:focus, .select:focus {
+  background: var(--bg-2);
+}
+
+/* ============ Stat-card hover ============ */
+@media (hover: hover) {
+  .stat-card {
+    transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.25s ease;
+  }
+  .stat-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(124, 92, 255, 0.3);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+  }
+}
+
+/* ============ Checkbox check animation ============ */
+.checkbox-mark {
+  transition: background 0.18s ease, border-color 0.18s ease, transform 0.15s ease;
+}
+.checkbox input:checked + .checkbox-mark {
+  animation: pop 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ============ Progress bar shimmer while loading ============ */
+.progress-bar {
+  position: relative;
+  overflow: hidden;
+}
+.progress-bar::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transform: translateX(-100%);
+  animation: shineSweep 2.4s ease-in-out infinite;
+}
+
+/* ============ Ring (progress) — subtle rotation on enter ============ */
+.ring {
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============ Tab indicator ============ */
+.tab {
+  position: relative;
+  transition: color 0.18s ease;
+}
+.tab.active {
+  color: var(--text-0);
+}
+.tab.active::after {
+  content: '';
+  position: absolute;
+  left: 8px; right: 8px;
+  bottom: -1px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  border-radius: 2px;
+  animation: slideRight 0.3s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+/* ============ Topbar / page header subtle lift ============ */
+.page-header h1 {
+  background: linear-gradient(180deg, var(--text-0) 0%, var(--text-1) 110%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ============ Drag-over emphasis ============ */
+.kanban-list.drag-over {
+  background: rgba(124, 92, 255, 0.06);
+  outline: 1px dashed rgba(124, 92, 255, 0.4);
+  outline-offset: -4px;
+  transition: background 0.15s ease;
+}
+
+/* ============ Toast container subtle entrance handled by JS ============ */
+.toast { transition: transform 0.22s ease, opacity 0.22s ease; }
+
+/* ============ Reduced motion ============ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+  }
+  .brand-mark { animation: none !important; }
+  .progress-bar::after { display: none; }
+}
