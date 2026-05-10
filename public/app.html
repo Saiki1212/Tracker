@@ -7,8 +7,8 @@
   <meta name="color-scheme" content="dark">
   <title>Forge</title>
   <link rel="manifest" href="/manifest.webmanifest">
-  <link rel="icon" type="image/svg+xml" href="/assets/logo.svg">
-  <link rel="apple-touch-icon" href="/assets/logo.svg">
+  <link rel="icon" type="image/svg+xml" href="/assets/Forge.png">
+  <link rel="apple-touch-icon" href="/assets/Forge.png">
   <link rel="stylesheet" href="/css/tokens.css">
   <link rel="stylesheet" href="/css/base.css">
   <link rel="stylesheet" href="/css/layout.css">
@@ -17,6 +17,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Theme bootstrap — must run before any paint to avoid flash.
+       data-mode="cached" applies the localStorage cache instantly,
+       and app.js calls themes.syncFromServer() right after login is verified. -->
+  <script src="/js/themes.js" data-mode="cached"></script>
 
   <!-- Vendor libs (CDN) — easy to swap for /vendor/*.js later -->
   <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
@@ -31,6 +36,11 @@
       location.replace('/index.html');
     }
   </script>
+
+  <!-- Animated theme-aware background blobs -->
+  <div class="bg-blob b1" aria-hidden="true"></div>
+  <div class="bg-blob b2" aria-hidden="true"></div>
+  <div class="bg-blob b3" aria-hidden="true"></div>
 
   <div class="app" id="app">
     <aside class="sidebar" id="sidebar">

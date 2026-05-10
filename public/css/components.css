@@ -7,7 +7,14 @@
   border-radius: var(--radius-lg);
   padding: 18px;
   box-shadow: var(--shadow-glass);
-  transition: border-color 0.15s, transform 0.15s;
+  position: relative;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  transition:
+    border-color 0.18s var(--ease),
+    transform 0.2s var(--ease),
+    box-shadow 0.25s var(--ease),
+    background 0.2s var(--ease);
 }
 .card.hoverable {
   cursor: pointer;
@@ -83,12 +90,19 @@
 .btn svg { width: 14px; height: 14px; }
 
 .btn-primary {
-  background: linear-gradient(180deg, var(--accent), #6446ff);
-  border-color: rgba(255, 255, 255, 0.1);
-  color: white;
-  box-shadow: 0 4px 12px rgba(124, 92, 255, 0.3);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(0, 0, 0, 0.08)),
+    var(--accent);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(var(--accent-rgb), 0.32);
 }
-.btn-primary:hover { background: linear-gradient(180deg, #8a6dff, #6e51ff); }
+.btn-primary:hover {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(0, 0, 0, 0.04)),
+    var(--accent);
+  box-shadow: 0 6px 18px rgba(var(--accent-rgb), 0.42);
+}
 
 .btn-ghost { background: transparent; border-color: transparent; }
 .btn-ghost:hover { background: var(--bg-glass); border-color: var(--border); }
@@ -120,7 +134,7 @@
 }
 .input:focus, .textarea:focus, .select:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.18);
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.18);
 }
 .textarea { min-height: 90px; resize: vertical; }
 
@@ -159,7 +173,7 @@
   white-space: nowrap;
 }
 .chip-mono { font-family: var(--font-mono); font-size: 11px; }
-.chip-accent { background: rgba(124, 92, 255, 0.15); color: var(--accent); border-color: rgba(124, 92, 255, 0.3); }
+.chip-accent { background: rgba(var(--accent-rgb), 0.15); color: var(--accent); border-color: rgba(var(--accent-rgb), 0.3); }
 
 .status-pill {
   display: inline-flex;
@@ -541,9 +555,9 @@
   border-radius: 2px;
   background: var(--bg-2);
 }
-.heatmap-cell.l1 { background: rgba(124, 92, 255, 0.25); }
-.heatmap-cell.l2 { background: rgba(124, 92, 255, 0.5); }
-.heatmap-cell.l3 { background: rgba(124, 92, 255, 0.75); }
+.heatmap-cell.l1 { background: rgba(var(--accent-rgb), 0.25); }
+.heatmap-cell.l2 { background: rgba(var(--accent-rgb), 0.5); }
+.heatmap-cell.l3 { background: rgba(var(--accent-rgb), 0.75); }
 .heatmap-cell.l4 { background: var(--accent); }
 
 /* ============ Search input ============ */

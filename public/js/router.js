@@ -69,6 +69,8 @@ window.router = (function () {
       if (window.fx) {
         fx.pageEnter(view);
         fx.bindCardHover(view);
+        fx.bindMagneticButtons(view);
+        fx.bindRipples(view);
         fx.animateRings(view);
         fx.animateProgress(view);
         fx.refreshAOS();

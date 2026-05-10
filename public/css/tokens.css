@@ -1,43 +1,22 @@
-/* Design tokens — Linear/Vercel/Stripe-inspired dark dev dashboard */
+/* ====================================================================
+   Forge — Theme tokens
+   8 themes with distinct personalities. Each varies hue cast on body,
+   surfaces, borders, and how prominently the accent appears.
+
+      DARK
+      • midnight  cool blue glass · indigo · airy
+      • graphite  pure neutral monochrome · blue · minimal
+      • onyx      true black, green-tinted · cyan/emerald · terminal
+      • carbon    warm brown · amber · cozy
+
+      LIGHT
+      • paper     warm off-white · indigo · soft Notion
+      • frost     pure white · bright blue · sharp Vercel
+      • linen     cream sand · slate + amber · earthy
+      • pearl     cool blue-white · teal · clinical
+   ==================================================================== */
+
 :root {
-  /* Surfaces */
-  --bg-0: #0A0B0F;
-  --bg-1: #0F1117;
-  --bg-2: #151823;
-  --bg-3: #1B1F2C;
-  --bg-glass: rgba(255, 255, 255, 0.03);
-  --bg-glass-2: rgba(255, 255, 255, 0.05);
-
-  /* Borders */
-  --border: #1F2330;
-  --border-strong: #2A3040;
-  --border-bright: #3A4156;
-
-  /* Text */
-  --text-0: #E6E8EE;
-  --text-1: #A0A6B8;
-  --text-2: #6B7184;
-  --text-3: #4A4F60;
-
-  /* Accents */
-  --accent: #7C5CFF;
-  --accent-2: #22D3EE;
-  --accent-3: #F472B6;
-
-  /* Semantic */
-  --ok: #10B981;
-  --warn: #F59E0B;
-  --bad: #EF4444;
-  --info: #3B82F6;
-
-  /* Status pills */
-  --status-wishlist: #6B7184;
-  --status-applied: #3B82F6;
-  --status-oa: #8B5CF6;
-  --status-interviewing: #F59E0B;
-  --status-rejected: #EF4444;
-  --status-offer: #10B981;
-
   /* Typography */
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
@@ -56,13 +35,6 @@
   --space-5: 20px;
   --space-6: 24px;
   --space-8: 32px;
-  --space-10: 40px;
-  --space-12: 48px;
-
-  /* Effects */
-  --shadow-glass: 0 1px 0 rgba(255,255,255,0.04) inset, 0 8px 24px rgba(0,0,0,0.35);
-  --shadow-pop: 0 12px 32px rgba(0,0,0,0.55), 0 1px 0 rgba(255,255,255,0.05) inset;
-  --ring: 0 0 0 1px var(--accent);
 
   /* Layout */
   --sidebar-w: 232px;
@@ -70,22 +42,435 @@
   --topbar-h: 56px;
   --bottom-nav-h: 60px;
 
-  /* Z */
+  /* Z layers */
   --z-sidebar: 30;
   --z-topbar: 40;
   --z-modal: 100;
   --z-toast: 200;
 
-  /* Safe area (iOS) */
+  /* Safe area */
   --safe-top: env(safe-area-inset-top, 0);
   --safe-bottom: env(safe-area-inset-bottom, 0);
-  --safe-left: env(safe-area-inset-left, 0);
-  --safe-right: env(safe-area-inset-right, 0);
+
+  /* Animation */
+  --dur-fast: 0.15s;
+  --dur: 0.25s;
+  --dur-slow: 0.45s;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* Breakpoints (used in @media) */
-/*
-  --bp-sm: 640px
-  --bp-md: 1024px
-  --bp-lg: 1440px
-*/
+/* ====================================================================
+   DARK · MIDNIGHT — Cool blue glass with indigo (default).
+   Heavy blob, glassy surfaces, dreamy.
+   ==================================================================== */
+:root,
+[data-theme="midnight"] {
+  color-scheme: dark;
+  --mode: dark;
+  --theme-personality: glass;
+
+  --bg-0: #0B0D14;
+  --bg-1: #11141D;
+  --bg-2: #181C28;
+  --bg-3: #20253333;
+  --bg-glass: rgba(255, 255, 255, 0.03);
+  --bg-glass-2: rgba(255, 255, 255, 0.06);
+
+  --surface-bar: rgba(13, 16, 25, 0.72);
+  --surface-card: rgba(255, 255, 255, 0.025);
+
+  --border: #1F2434;
+  --border-strong: #2C3346;
+  --border-bright: #3F4862;
+
+  --text-0: #ECEDEF;
+  --text-1: #9BA1AF;
+  --text-2: #6B7280;
+  --text-3: #4B5161;
+
+  --accent: #6366F1;
+  --accent-rgb: 99, 102, 241;
+  --accent-2: #06B6D4;
+  --accent-2-rgb: 6, 182, 212;
+  --accent-3: #A78BFA;
+
+  --ok: #10B981; --warn: #F59E0B; --bad: #EF4444; --info: #3B82F6;
+
+  --status-wishlist: #6B7280; --status-applied: #3B82F6;
+  --status-oa: #8B5CF6; --status-interviewing: #F59E0B;
+  --status-rejected: #EF4444; --status-offer: #10B981;
+
+  --shadow-glass: 0 1px 0 rgba(255,255,255,0.04) inset, 0 8px 24px rgba(0,0,0,0.35);
+  --shadow-pop: 0 12px 32px rgba(0,0,0,0.55), 0 1px 0 rgba(255,255,255,0.05) inset;
+  --shadow-glow: 0 0 36px rgba(var(--accent-rgb), 0.22);
+
+  --blob-opacity: 0.65;
+  --blob-blur: 80px;
+}
+
+/* ====================================================================
+   DARK · GRAPHITE — Pure neutral monochrome, minimal accent.
+   Almost no blobs. Vercel/terminal-clean.
+   ==================================================================== */
+[data-theme="graphite"] {
+  color-scheme: dark;
+  --mode: dark;
+  --theme-personality: minimal;
+
+  --bg-0: #0A0A0A;
+  --bg-1: #131313;
+  --bg-2: #1A1A1A;
+  --bg-3: #232323;
+  --bg-glass: rgba(255, 255, 255, 0.025);
+  --bg-glass-2: rgba(255, 255, 255, 0.05);
+
+  --surface-bar: rgba(10, 10, 10, 0.86);
+  --surface-card: #131313;
+
+  --border: #1F1F1F;
+  --border-strong: #2A2A2A;
+  --border-bright: #3D3D3D;
+
+  --text-0: #FAFAFA;
+  --text-1: #A1A1A1;
+  --text-2: #737373;
+  --text-3: #525252;
+
+  --accent: #3B82F6;
+  --accent-rgb: 59, 130, 246;
+  --accent-2: #FAFAFA;
+  --accent-2-rgb: 250, 250, 250;
+  --accent-3: #A1A1A1;
+
+  --ok: #22C55E; --warn: #EAB308; --bad: #EF4444; --info: #3B82F6;
+
+  --status-wishlist: #737373; --status-applied: #3B82F6;
+  --status-oa: #8B5CF6; --status-interviewing: #EAB308;
+  --status-rejected: #EF4444; --status-offer: #22C55E;
+
+  --shadow-glass: 0 0 0 1px rgba(255,255,255,0.03) inset, 0 1px 2px rgba(0,0,0,0.3);
+  --shadow-pop: 0 12px 32px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.04) inset;
+  --shadow-glow: 0 0 24px rgba(var(--accent-rgb), 0.18);
+
+  --blob-opacity: 0.12;
+  --blob-blur: 100px;
+}
+
+/* ====================================================================
+   DARK · ONYX — True black with green-tinted text, terminal-like.
+   Cyan accent dominant on small details.
+   ==================================================================== */
+[data-theme="onyx"] {
+  color-scheme: dark;
+  --mode: dark;
+  --theme-personality: terminal;
+
+  --bg-0: #050608;
+  --bg-1: #0A0D11;
+  --bg-2: #10141A;
+  --bg-3: #161B24;
+  --bg-glass: rgba(180, 230, 200, 0.025);
+  --bg-glass-2: rgba(180, 230, 200, 0.05);
+
+  --surface-bar: rgba(5, 7, 10, 0.86);
+  --surface-card: rgba(180, 230, 200, 0.022);
+
+  --border: #16202A;
+  --border-strong: #20303D;
+  --border-bright: #2F4659;
+
+  --text-0: #DDF1E6;
+  --text-1: #8FA8A0;
+  --text-2: #5C7570;
+  --text-3: #3D514D;
+
+  --accent: #22D3EE;
+  --accent-rgb: 34, 211, 238;
+  --accent-2: #34D399;
+  --accent-2-rgb: 52, 211, 153;
+  --accent-3: #38BDF8;
+
+  --ok: #34D399; --warn: #FBBF24; --bad: #F87171; --info: #22D3EE;
+
+  --status-wishlist: #5C7570; --status-applied: #38BDF8;
+  --status-oa: #A78BFA; --status-interviewing: #FBBF24;
+  --status-rejected: #F87171; --status-offer: #34D399;
+
+  --shadow-glass: 0 1px 0 rgba(180,230,200,0.05) inset, 0 8px 24px rgba(0,0,0,0.5);
+  --shadow-pop: 0 12px 32px rgba(0,0,0,0.7), 0 1px 0 rgba(180,230,200,0.06) inset;
+  --shadow-glow: 0 0 32px rgba(var(--accent-rgb), 0.25);
+
+  --blob-opacity: 0.4;
+  --blob-blur: 90px;
+}
+
+/* ====================================================================
+   DARK · CARBON — Warm brown with bold amber accent. Cozy, distinctive.
+   ==================================================================== */
+[data-theme="carbon"] {
+  color-scheme: dark;
+  --mode: dark;
+  --theme-personality: warm;
+
+  --bg-0: #14110A;
+  --bg-1: #1B170E;
+  --bg-2: #251F14;
+  --bg-3: #30281A;
+  --bg-glass: rgba(255, 220, 160, 0.03);
+  --bg-glass-2: rgba(255, 220, 160, 0.06);
+
+  --surface-bar: rgba(20, 17, 10, 0.84);
+  --surface-card: rgba(255, 220, 160, 0.025);
+
+  --border: #2C2419;
+  --border-strong: #3D3324;
+  --border-bright: #574832;
+
+  --text-0: #F5EDDA;
+  --text-1: #BAA78C;
+  --text-2: #877458;
+  --text-3: #5C4D38;
+
+  --accent: #F59E0B;
+  --accent-rgb: 245, 158, 11;
+  --accent-2: #F97316;
+  --accent-2-rgb: 249, 115, 22;
+  --accent-3: #EAB308;
+
+  --ok: #84CC16; --warn: #F59E0B; --bad: #DC2626; --info: #F59E0B;
+
+  --status-wishlist: #877458; --status-applied: #60A5FA;
+  --status-oa: #A78BFA; --status-interviewing: #F59E0B;
+  --status-rejected: #DC2626; --status-offer: #84CC16;
+
+  --shadow-glass: 0 1px 0 rgba(255,220,160,0.05) inset, 0 8px 24px rgba(0,0,0,0.45);
+  --shadow-pop: 0 12px 32px rgba(0,0,0,0.65), 0 1px 0 rgba(255,220,160,0.07) inset;
+  --shadow-glow: 0 0 40px rgba(var(--accent-rgb), 0.3);
+
+  --blob-opacity: 0.7;
+  --blob-blur: 70px;
+}
+
+/* ====================================================================
+   LIGHT · PAPER — Warm off-white, soft indigo. Notion-like default.
+   ==================================================================== */
+[data-theme="paper"] {
+  color-scheme: light;
+  --mode: light;
+  --theme-personality: soft;
+
+  --bg-0: #FAFAF8;
+  --bg-1: #FFFFFF;
+  --bg-2: #F4F4EE;
+  --bg-3: #EAEAE2;
+  --bg-glass: rgba(255, 255, 255, 0.7);
+  --bg-glass-2: rgba(255, 255, 255, 0.85);
+
+  --surface-bar: rgba(252, 252, 248, 0.78);
+  --surface-card: #FFFFFF;
+
+  --border: #E4E4DC;
+  --border-strong: #D1D1C8;
+  --border-bright: #B0B0A6;
+
+  --text-0: #0F1320;
+  --text-1: #475168;
+  --text-2: #6B7385;
+  --text-3: #9499A8;
+
+  --accent: #4F46E5;
+  --accent-rgb: 79, 70, 229;
+  --accent-2: #0891B2;
+  --accent-2-rgb: 8, 145, 178;
+  --accent-3: #7C3AED;
+
+  --ok: #059669; --warn: #D97706; --bad: #DC2626; --info: #2563EB;
+
+  --status-wishlist: #6B7385; --status-applied: #2563EB;
+  --status-oa: #7C3AED; --status-interviewing: #D97706;
+  --status-rejected: #DC2626; --status-offer: #059669;
+
+  --shadow-glass: 0 1px 0 rgba(255,255,255,0.5) inset, 0 1px 2px rgba(15,23,42,0.04), 0 8px 24px rgba(15,23,42,0.06);
+  --shadow-pop: 0 12px 32px rgba(15,23,42,0.12), 0 1px 0 rgba(255,255,255,0.7) inset;
+  --shadow-glow: 0 0 28px rgba(var(--accent-rgb), 0.18);
+
+  --blob-opacity: 0.3;
+  --blob-blur: 90px;
+}
+
+/* ====================================================================
+   LIGHT · FROST — Pure white, sharp blue. Vercel-clean, minimal.
+   Almost no blobs. Heavy use of borders.
+   ==================================================================== */
+[data-theme="frost"] {
+  color-scheme: light;
+  --mode: light;
+  --theme-personality: sharp;
+
+  --bg-0: #FFFFFF;
+  --bg-1: #FFFFFF;
+  --bg-2: #FAFAFA;
+  --bg-3: #F4F4F5;
+  --bg-glass: rgba(255, 255, 255, 0.78);
+  --bg-glass-2: rgba(255, 255, 255, 0.92);
+
+  --surface-bar: rgba(255, 255, 255, 0.9);
+  --surface-card: #FFFFFF;
+
+  --border: #E4E4E7;
+  --border-strong: #D4D4D8;
+  --border-bright: #A1A1AA;
+
+  --text-0: #09090B;
+  --text-1: #3F3F46;
+  --text-2: #71717A;
+  --text-3: #A1A1AA;
+
+  --accent: #2563EB;
+  --accent-rgb: 37, 99, 235;
+  --accent-2: #09090B;
+  --accent-2-rgb: 9, 9, 11;
+  --accent-3: #71717A;
+
+  --ok: #16A34A; --warn: #CA8A04; --bad: #DC2626; --info: #2563EB;
+
+  --status-wishlist: #71717A; --status-applied: #2563EB;
+  --status-oa: #7C3AED; --status-interviewing: #CA8A04;
+  --status-rejected: #DC2626; --status-offer: #16A34A;
+
+  --shadow-glass: 0 0 0 1px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-pop: 0 12px 32px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.06);
+  --shadow-glow: 0 0 24px rgba(var(--accent-rgb), 0.16);
+
+  --blob-opacity: 0.08;
+  --blob-blur: 110px;
+}
+
+/* ====================================================================
+   LIGHT · LINEN — Cream sand, slate primary, amber pop. Earthy.
+   ==================================================================== */
+[data-theme="linen"] {
+  color-scheme: light;
+  --mode: light;
+  --theme-personality: warm-earthy;
+
+  --bg-0: #F6EFE0;
+  --bg-1: #FCF8EE;
+  --bg-2: #EFE5CE;
+  --bg-3: #E4D6B6;
+  --bg-glass: rgba(252, 248, 238, 0.72);
+  --bg-glass-2: rgba(252, 248, 238, 0.88);
+
+  --surface-bar: rgba(248, 240, 220, 0.84);
+  --surface-card: #FCF8EE;
+
+  --border: #DCD0AE;
+  --border-strong: #C2B387;
+  --border-bright: #9A8956;
+
+  --text-0: #2A2110;
+  --text-1: #5C4D32;
+  --text-2: #7D6E51;
+  --text-3: #A89876;
+
+  --accent: #475569;
+  --accent-rgb: 71, 85, 105;
+  --accent-2: #B45309;
+  --accent-2-rgb: 180, 83, 9;
+  --accent-3: #57534E;
+
+  --ok: #15803D; --warn: #B45309; --bad: #B91C1C; --info: #475569;
+
+  --status-wishlist: #7D6E51; --status-applied: #475569;
+  --status-oa: #6D28D9; --status-interviewing: #B45309;
+  --status-rejected: #B91C1C; --status-offer: #15803D;
+
+  --shadow-glass: 0 1px 0 rgba(255,255,255,0.5) inset, 0 1px 2px rgba(80,60,30,0.06), 0 6px 18px rgba(80,60,30,0.08);
+  --shadow-pop: 0 12px 32px rgba(80,60,30,0.14), 0 1px 0 rgba(255,255,255,0.7) inset;
+
+  --blob-opacity: 0.45;
+  --blob-blur: 80px;
+}
+
+/* ====================================================================
+   LIGHT · PEARL — Cool blue-white, teal accent. Stripe-clinical.
+   ==================================================================== */
+[data-theme="pearl"] {
+  color-scheme: light;
+  --mode: light;
+  --theme-personality: cool-clinical;
+
+  --bg-0: #EFF4FA;
+  --bg-1: #FFFFFF;
+  --bg-2: #E5ECF5;
+  --bg-3: #D8E2EE;
+  --bg-glass: rgba(255, 255, 255, 0.7);
+  --bg-glass-2: rgba(255, 255, 255, 0.86);
+
+  --surface-bar: rgba(244, 248, 253, 0.82);
+  --surface-card: #FFFFFF;
+
+  --border: #D8E0EC;
+  --border-strong: #BAC5D6;
+  --border-bright: #8E9CB2;
+
+  --text-0: #0B1220;
+  --text-1: #3F4A60;
+  --text-2: #5E6A82;
+  --text-3: #8B95AD;
+
+  --accent: #0F766E;
+  --accent-rgb: 15, 118, 110;
+  --accent-2: #4338CA;
+  --accent-2-rgb: 67, 56, 202;
+  --accent-3: #0891B2;
+
+  --ok: #047857; --warn: #B45309; --bad: #BE123C; --info: #1D4ED8;
+
+  --status-wishlist: #5E6A82; --status-applied: #1D4ED8;
+  --status-oa: #6D28D9; --status-interviewing: #B45309;
+  --status-rejected: #BE123C; --status-offer: #047857;
+
+  --shadow-glass: 0 1px 0 rgba(255,255,255,0.5) inset, 0 1px 2px rgba(15,30,60,0.05), 0 6px 18px rgba(15,30,60,0.08);
+  --shadow-pop: 0 12px 32px rgba(15,30,60,0.14), 0 1px 0 rgba(255,255,255,0.7) inset;
+
+  --blob-opacity: 0.35;
+  --blob-blur: 100px;
+}
+
+/* ====================================================================
+   Theme-aware bg gradient (used by .bg-blob in base.css)
+   ==================================================================== */
+[data-theme] {
+  --bg-gradient:
+    radial-gradient(1200px 800px at 80% -10%, rgba(var(--accent-rgb), 0.10), transparent 60%),
+    radial-gradient(900px 600px at -10% 90%, rgba(var(--accent-2-rgb), 0.08), transparent 60%);
+}
+
+/* Personality-specific overrides ===================================== */
+
+/* Minimal/Sharp themes: drop the radial bg gradient entirely */
+[data-theme="graphite"],
+[data-theme="frost"] {
+  --bg-gradient: none;
+}
+
+/* Warm themes: heavier amber/orange wash on body */
+[data-theme="carbon"] {
+  --bg-gradient:
+    radial-gradient(1100px 700px at 80% -5%, rgba(245, 158, 11, 0.16), transparent 55%),
+    radial-gradient(900px 700px at 0% 95%, rgba(249, 115, 22, 0.12), transparent 60%);
+}
+[data-theme="linen"] {
+  --bg-gradient:
+    radial-gradient(1100px 700px at 80% -5%, rgba(180, 83, 9, 0.10), transparent 55%),
+    radial-gradient(900px 700px at 0% 95%, rgba(120, 100, 50, 0.08), transparent 60%);
+}
+
+/* Onyx: sparse green-tinted glow */
+[data-theme="onyx"] {
+  --bg-gradient:
+    radial-gradient(800px 600px at 90% 0%, rgba(34, 211, 238, 0.10), transparent 60%),
+    radial-gradient(700px 500px at 0% 100%, rgba(52, 211, 153, 0.08), transparent 60%);
+}

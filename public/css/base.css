@@ -1,8 +1,4 @@
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
+*, *::before, *::after { box-sizing: border-box; }
 
 html, body {
   margin: 0;
@@ -12,7 +8,6 @@ html, body {
 
 html {
   background: var(--bg-0);
-  color-scheme: dark;
 }
 
 body {
@@ -20,20 +15,20 @@ body {
   font-size: 14px;
   line-height: 1.5;
   color: var(--text-0);
-  background:
-    radial-gradient(1200px 800px at 80% -10%, rgba(124, 92, 255, 0.08), transparent 60%),
-    radial-gradient(900px 600px at -10% 90%, rgba(34, 211, 238, 0.06), transparent 60%),
-    var(--bg-0);
+  background: var(--bg-gradient), var(--bg-0);
   background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   overscroll-behavior-y: none;
+  /* Smooth theme transitions */
+  transition: background-color 0.4s var(--ease), color 0.4s var(--ease);
 }
 
 a {
-  color: var(--accent-2);
+  color: var(--accent);
   text-decoration: none;
+  transition: color 0.18s var(--ease);
 }
 a:hover { text-decoration: underline; }
 
@@ -63,12 +58,14 @@ code, kbd, pre {
 }
 ::-webkit-scrollbar-thumb:hover { background: var(--border-bright); }
 
-::selection { background: rgba(124, 92, 255, 0.35); color: var(--text-0); }
+::selection {
+  background: rgba(var(--accent-rgb), 0.35);
+  color: var(--text-0);
+}
 
 button { font-family: inherit; }
 input, textarea, select { font-family: inherit; color: inherit; }
 
-/* Hide visually but keep for screen readers */
 .sr-only {
   position: absolute;
   width: 1px; height: 1px;
@@ -82,6 +79,69 @@ input, textarea, select { font-family: inherit; color: inherit; }
 .text-1 { color: var(--text-1); }
 .text-0 { color: var(--text-0); }
 
+/* Animated background blobs (positioned by app.html / index.html) */
+.bg-blob {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: -1;
+  filter: blur(80px);
+  opacity: var(--blob-opacity, 0.55);
+  will-change: transform;
+}
+.bg-blob.b1 {
+  top: -160px; right: -120px;
+  width: 520px; height: 520px;
+  background: radial-gradient(circle, rgba(var(--accent-rgb), 0.45), transparent 60%);
+  animation: blobDrift1 22s ease-in-out infinite alternate;
+}
+.bg-blob.b2 {
+  bottom: -180px; left: -160px;
+  width: 540px; height: 540px;
+  background: radial-gradient(circle, rgba(var(--accent-2-rgb), 0.35), transparent 60%);
+  animation: blobDrift2 28s ease-in-out infinite alternate;
+}
+.bg-blob.b3 {
+  top: 40%; left: 35%;
+  width: 380px; height: 380px;
+  background: radial-gradient(circle, rgba(var(--accent-rgb), 0.18), transparent 60%);
+  animation: blobDrift3 30s ease-in-out infinite alternate;
+}
+
+@keyframes blobDrift1 {
+  0%   { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-80px, 60px) scale(1.15); }
+}
+@keyframes blobDrift2 {
+  0%   { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(70px, -40px) scale(1.1); }
+}
+@keyframes blobDrift3 {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(40px, 30px) scale(0.95); }
+  100% { transform: translate(-30px, -50px) scale(1.05); }
+}
+
+/* View-transition crossfade when theme changes */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.5s;
+  animation-timing-function: var(--ease);
+}
+
+/* Ripple click effect (added by JS for buttons/cards) */
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(var(--accent-rgb), 0.35);
+  transform: scale(0);
+  animation: rippleExpand 0.6s ease-out;
+  pointer-events: none;
+}
+@keyframes rippleExpand {
+  to { transform: scale(2.4); opacity: 0; }
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -89,4 +149,5 @@ input, textarea, select { font-family: inherit; color: inherit; }
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
+  .bg-blob { animation: none !important; }
 }

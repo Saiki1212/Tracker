@@ -160,8 +160,14 @@
       fx.initAOS();
       fx.bootApp();
       fx.moveNavIndicator();
+      fx.bindMagneticButtons(document);
+      fx.bindRipples(document);
     }
     auth.refresh().then(bindHeaderUser).catch(() => {});
+    // Pull persisted theme from MongoDB (UserSettings) and apply if changed
+    if (window.themes && window.themes.syncFromServer) {
+      themes.syncFromServer().catch(() => {});
+    }
     router.render();
   });
 })();

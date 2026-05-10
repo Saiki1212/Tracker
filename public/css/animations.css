@@ -1,15 +1,16 @@
-/* AOS overrides for our dark theme */
+/* AOS overrides */
 [data-aos] { transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }
 
 /* ============ Keyframes ============ */
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-@keyframes slideUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes slideRight { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: translateX(0); } }
-@keyframes pop { from { opacity: 0; transform: scale(0.94); } to { opacity: 1; transform: scale(1); } }
-@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slideRight { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes pop { from { opacity: 0; transform: scale(0.92); } to { opacity: 1; transform: scale(1); } }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
 @keyframes glowPulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(124, 92, 255, 0); }
-  50%      { box-shadow: 0 0 0 8px rgba(124, 92, 255, 0.18); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(var(--accent-rgb), 0); }
+  50%      { box-shadow: 0 0 0 10px rgba(var(--accent-rgb), 0.18); }
 }
 @keyframes gradientShift {
   0%   { background-position: 0% 50%; }
@@ -20,43 +21,55 @@
   0%   { transform: translateX(-100%) skewX(-20deg); }
   100% { transform: translateX(220%) skewX(-20deg); }
 }
-@keyframes ringSpin {
-  to { transform: rotate(360deg); }
-}
+@keyframes ringSpin { to { transform: rotate(360deg); } }
 @keyframes blink {
   0%, 100% { opacity: 1; }
   50%      { opacity: 0.45; }
 }
-@keyframes ripple {
-  to { transform: scale(2.4); opacity: 0; }
+@keyframes pulseRing {
+  0%   { transform: scale(0.8); opacity: 0.7; }
+  80%  { transform: scale(1.6); opacity: 0; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+@keyframes spinSlow { to { transform: rotate(360deg); } }
+@keyframes magneticFloat {
+  0%, 100% { transform: translate(0, 0); }
+  25%      { transform: translate(2px, -1px); }
+  50%      { transform: translate(-2px, 1px); }
+  75%      { transform: translate(1px, 2px); }
 }
 
 /* ============ Utility classes ============ */
-.fade-in { animation: fadeIn 0.3s ease both; }
-.slide-up { animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) both; }
-.slide-right { animation: slideRight 0.3s cubic-bezier(0.4, 0, 0.2, 1) both; }
-.pop { animation: pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+.fade-in { animation: fadeIn 0.35s var(--ease) both; }
+.slide-up { animation: slideUp 0.45s var(--ease) both; }
+.slide-right { animation: slideRight 0.35s var(--ease) both; }
+.slide-down { animation: slideDown 0.35s var(--ease) both; }
+.pop { animation: pop 0.32s var(--ease-bounce) both; }
 .float-anim { animation: float 4s ease-in-out infinite; }
 
-/* ============ Stagger fallback (used until GSAP attaches) ============ */
+/* ============ View enter (CSS fallback if GSAP misses) ============ */
 .view-enter > * {
-  animation: slideUp 0.42s cubic-bezier(0.4, 0, 0.2, 1) both;
+  animation: slideUp 0.45s var(--ease) both;
 }
-.view-enter > *:nth-child(1) { animation-delay: 0.02s; }
-.view-enter > *:nth-child(2) { animation-delay: 0.07s; }
-.view-enter > *:nth-child(3) { animation-delay: 0.12s; }
-.view-enter > *:nth-child(4) { animation-delay: 0.17s; }
-.view-enter > *:nth-child(5) { animation-delay: 0.22s; }
-.view-enter > *:nth-child(6) { animation-delay: 0.27s; }
-.view-enter > *:nth-child(7) { animation-delay: 0.32s; }
+.view-enter > *:nth-child(1) { animation-delay: 0.04s; }
+.view-enter > *:nth-child(2) { animation-delay: 0.10s; }
+.view-enter > *:nth-child(3) { animation-delay: 0.16s; }
+.view-enter > *:nth-child(4) { animation-delay: 0.22s; }
+.view-enter > *:nth-child(5) { animation-delay: 0.28s; }
+.view-enter > *:nth-child(6) { animation-delay: 0.34s; }
+.view-enter > *:nth-child(7) { animation-delay: 0.40s; }
+.view-enter > *:nth-child(8) { animation-delay: 0.46s; }
 
 /* ============ Brand mark animated gradient ============ */
 .brand-mark {
   background-size: 220% 220% !important;
-  animation: gradientShift 9s ease infinite;
+  animation: gradientShift 8s ease infinite;
+}
+.sidebar-brand:hover .brand-mark {
+  animation: gradientShift 2.5s ease infinite, float 2.5s ease-in-out infinite;
 }
 
-/* ============ Buttons: shine sweep on hover ============ */
+/* ============ Buttons: shine sweep ============ */
 .btn-primary {
   position: relative;
   overflow: hidden;
@@ -66,144 +79,193 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.22) 50%, transparent 70%);
+  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.28) 50%, transparent 70%);
   transform: translateX(-100%) skewX(-20deg);
   pointer-events: none;
   z-index: 1;
 }
-.btn-primary:hover::after {
-  animation: shineSweep 0.85s ease-out;
+.btn-primary:hover::after { animation: shineSweep 0.85s ease-out; }
+.btn { transition: background var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease), box-shadow var(--dur) var(--ease); }
+.btn:active { transform: translateY(1px) scale(0.97); }
+
+/* Magnetic button — JS sets --mx/--my on mousemove, CSS reacts */
+.btn[data-magnetic] {
+  --mx: 0; --my: 0;
+  transition: transform 0.2s var(--ease), background var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), box-shadow var(--dur) var(--ease);
+}
+@media (hover: hover) {
+  .btn[data-magnetic]:hover {
+    transform: translate(calc(var(--mx) * 1px), calc(var(--my) * 1px));
+  }
 }
 
-/* ============ Card hover glow (subtle) ============ */
+/* ============ Cards — 3D tilt + glow on hover ============ */
+.card.hoverable {
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+  transform: perspective(900px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+  transition:
+    transform 0.18s var(--ease),
+    border-color 0.2s var(--ease),
+    box-shadow 0.3s var(--ease),
+    background 0.2s var(--ease);
+}
+.card.hoverable::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: var(--radius-lg);
+  background: radial-gradient(
+    600px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(var(--accent-rgb), 0.22),
+    transparent 40%
+  );
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s var(--ease);
+  z-index: 0;
+}
+.card.hoverable > * { position: relative; z-index: 1; }
+
 @media (hover: hover) {
-  .card.hoverable {
-    transition: border-color 0.18s ease, box-shadow 0.25s ease, background 0.18s ease;
-  }
   .card.hoverable:hover {
-    border-color: rgba(124, 92, 255, 0.35);
+    border-color: rgba(var(--accent-rgb), 0.4);
     box-shadow:
-      0 1px 0 rgba(255, 255, 255, 0.05) inset,
-      0 12px 36px rgba(0, 0, 0, 0.45),
-      0 0 0 1px rgba(124, 92, 255, 0.12);
+      var(--shadow-glass),
+      0 14px 44px rgba(var(--accent-rgb), 0.18),
+      0 0 0 1px rgba(var(--accent-rgb), 0.18);
   }
+  .card.hoverable:hover::before { opacity: 1; }
 
   .kanban-card {
-    transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.2s ease;
+    transition: border-color 0.18s var(--ease), background 0.18s var(--ease), box-shadow 0.25s var(--ease), transform 0.18s var(--ease);
   }
   .kanban-card:hover {
     border-color: var(--border-bright);
     background: var(--bg-3);
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.25);
+    transform: translateY(-2px);
   }
 }
 
-/* ============ Nav link active indicator (animated) ============ */
+/* ============ Stat-card ============ */
+@media (hover: hover) {
+  .stat-card {
+    transition: border-color 0.2s var(--ease), transform 0.25s var(--ease), box-shadow 0.3s var(--ease);
+  }
+  .stat-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(var(--accent-rgb), 0.35);
+    box-shadow:
+      var(--shadow-glass),
+      0 16px 36px rgba(var(--accent-rgb), 0.15);
+  }
+  .stat-card:hover .stat-value {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+/* ============ Sidebar nav active indicator ============ */
 .nav { position: relative; }
 .nav-indicator {
   position: absolute;
   left: 4px;
-  width: 2px;
+  width: 3px;
   background: linear-gradient(180deg, var(--accent), var(--accent-2));
-  border-radius: 2px;
+  border-radius: 3px;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.2s ease;
-  box-shadow: 0 0 12px rgba(124, 92, 255, 0.45);
+  transition: opacity 0.2s var(--ease);
+  box-shadow: 0 0 12px rgba(var(--accent-rgb), 0.55);
 }
-/* Hide CSS pseudo so the JS indicator is the only one shown */
 .nav-link.active::before { display: none; }
 .nav-link {
-  transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
+  transition: background 0.18s var(--ease), color 0.18s var(--ease), transform 0.2s var(--ease);
 }
-.nav-link:hover { transform: translateX(2px); }
+@media (hover: hover) {
+  .nav-link:hover { transform: translateX(3px); }
+}
+.nav-link svg {
+  transition: transform 0.25s var(--ease-bounce), color 0.18s var(--ease);
+}
+.nav-link:hover svg { transform: scale(1.12) rotate(-4deg); }
+.nav-link.active svg { color: var(--accent); }
 
 /* ============ Bottom nav active indicator ============ */
 .bottom-nav a {
   position: relative;
-  transition: color 0.18s ease;
+  transition: color 0.18s var(--ease), transform 0.15s var(--ease);
 }
+.bottom-nav a:active { transform: translateY(2px); }
 .bottom-nav a.active::before {
   content: '';
   position: absolute;
   top: 4px;
   left: 50%;
-  width: 24px;
+  width: 28px;
   height: 3px;
   border-radius: 2px;
   background: linear-gradient(90deg, var(--accent), var(--accent-2));
   transform: translateX(-50%);
-  animation: pop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-  box-shadow: 0 0 10px rgba(124, 92, 255, 0.4);
+  animation: pop 0.3s var(--ease-bounce) both;
+  box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.5);
 }
+.bottom-nav a svg {
+  transition: transform 0.3s var(--ease-bounce);
+}
+.bottom-nav a.active svg { transform: scale(1.18) translateY(-1px); }
 
-/* ============ Status pill active "interviewing" gentle pulse ============ */
-.status-pill.status-Interviewing::before {
-  animation: blink 2.4s ease-in-out infinite;
+/* ============ Status pill animations ============ */
+.status-pill.status-Interviewing::before { animation: blink 2.4s ease-in-out infinite; }
+.status-pill.status-Offer { animation: glowPulse 3s ease-in-out infinite; }
+.status-pill {
+  transition: transform 0.15s var(--ease);
 }
-.status-pill.status-Offer {
-  animation: glowPulse 3s ease-in-out infinite;
-}
+.status-pill:hover { transform: scale(1.05); }
 
-/* ============ Inputs: focus ring lift ============ */
+/* ============ Inputs ============ */
 .input, .textarea, .select {
-  transition:
-    border-color 0.18s ease,
-    box-shadow 0.18s ease,
-    background 0.18s ease,
-    transform 0.18s ease;
+  transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease), background 0.2s var(--ease), transform 0.15s var(--ease);
 }
 .input:focus, .textarea:focus, .select:focus {
   background: var(--bg-2);
+  transform: translateY(-1px);
 }
 
-/* ============ Stat-card hover ============ */
-@media (hover: hover) {
-  .stat-card {
-    transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.25s ease;
-  }
-  .stat-card:hover {
-    transform: translateY(-2px);
-    border-color: rgba(124, 92, 255, 0.3);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
-  }
-}
-
-/* ============ Checkbox check animation ============ */
+/* ============ Checkbox check pop ============ */
 .checkbox-mark {
-  transition: background 0.18s ease, border-color 0.18s ease, transform 0.15s ease;
+  transition: background 0.2s var(--ease), border-color 0.2s var(--ease), transform 0.2s var(--ease-bounce);
 }
 .checkbox input:checked + .checkbox-mark {
-  animation: pop 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: pop 0.28s var(--ease-bounce);
 }
 
-/* ============ Progress bar shimmer while loading ============ */
-.progress-bar {
-  position: relative;
-  overflow: hidden;
-}
+/* ============ Progress bar shimmer ============ */
+.progress-bar { position: relative; overflow: hidden; }
 .progress-bar::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.28), transparent);
   transform: translateX(-100%);
   animation: shineSweep 2.4s ease-in-out infinite;
 }
-
-/* ============ Ring (progress) — subtle rotation on enter ============ */
-.ring {
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+[data-theme="paper"] .progress-bar::after,
+[data-theme="frost"] .progress-bar::after,
+[data-theme="linen"] .progress-bar::after,
+[data-theme="pearl"] .progress-bar::after {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
 }
 
-/* ============ Tab indicator ============ */
-.tab {
-  position: relative;
-  transition: color 0.18s ease;
-}
-.tab.active {
-  color: var(--text-0);
-}
+/* ============ Ring (progress) ============ */
+.ring { transition: transform 0.4s var(--ease); }
+
+/* ============ Tabs underline ============ */
+.tab { position: relative; transition: color 0.2s var(--ease); }
+.tab.active { color: var(--text-0); }
 .tab.active::after {
   content: '';
   position: absolute;
@@ -212,10 +274,10 @@
   height: 2px;
   background: linear-gradient(90deg, var(--accent), var(--accent-2));
   border-radius: 2px;
-  animation: slideRight 0.3s cubic-bezier(0.4, 0, 0.2, 1) both;
+  animation: slideRight 0.32s var(--ease) both;
 }
 
-/* ============ Topbar / page header subtle lift ============ */
+/* ============ Page header gradient text ============ */
 .page-header h1 {
   background: linear-gradient(180deg, var(--text-0) 0%, var(--text-1) 110%);
   -webkit-background-clip: text;
@@ -223,26 +285,101 @@
   color: transparent;
 }
 
-/* ============ Drag-over emphasis ============ */
+/* ============ Drag-over highlight ============ */
 .kanban-list.drag-over {
-  background: rgba(124, 92, 255, 0.06);
-  outline: 1px dashed rgba(124, 92, 255, 0.4);
+  background: rgba(var(--accent-rgb), 0.08);
+  outline: 1.5px dashed rgba(var(--accent-rgb), 0.5);
   outline-offset: -4px;
-  transition: background 0.15s ease;
+  transition: background 0.18s var(--ease), outline-color 0.18s var(--ease);
 }
 
-/* ============ Toast container subtle entrance handled by JS ============ */
-.toast { transition: transform 0.22s ease, opacity 0.22s ease; }
+/* ============ Toast animations ============ */
+.toast { transition: transform 0.25s var(--ease), opacity 0.25s var(--ease); }
 
-/* ============ Reduced motion ============ */
+/* ============ Theme picker swatch ============ */
+.theme-swatch {
+  width: 100%;
+  aspect-ratio: 1.6 / 1;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s var(--ease), transform 0.2s var(--ease), box-shadow 0.25s var(--ease);
+  display: block;
+}
+.theme-swatch::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120px 80px at 80% 0%, var(--sw-accent), transparent 60%),
+    radial-gradient(120px 80px at 0% 100%, var(--sw-accent-2), transparent 60%),
+    var(--sw-bg);
+  transition: filter 0.3s var(--ease);
+}
+.theme-swatch::after {
+  content: attr(data-name);
+  position: absolute;
+  bottom: 8px; left: 10px;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--sw-text);
+  text-transform: capitalize;
+}
+.theme-swatch:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  box-shadow: 0 10px 24px rgba(var(--accent-rgb), 0.2);
+}
+.theme-swatch.selected {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent), 0 10px 24px rgba(var(--accent-rgb), 0.25);
+}
+.theme-swatch.selected::before { filter: brightness(1.1); }
+
+/* ============ Pulse ring (used for highlighting) ============ */
+.pulse-ring {
+  position: relative;
+}
+.pulse-ring::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+  border: 2px solid var(--accent);
+  animation: pulseRing 1.6s ease-out infinite;
+  pointer-events: none;
+}
+
+/* ============ Avatar shine ============ */
+.avatar { position: relative; overflow: hidden; }
+.avatar::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 35%, rgba(255, 255, 255, 0.35) 50%, transparent 65%);
+  transform: translateX(-100%);
+}
+.sidebar-footer:hover .avatar::after {
+  animation: shineSweep 0.9s ease-out;
+}
+
+/* ============ Light-mode tweaks ============ */
+[data-theme="paper"] .btn-primary::after,
+[data-theme="frost"] .btn-primary::after,
+[data-theme="linen"] .btn-primary::after,
+[data-theme="pearl"] .btn-primary::after {
+  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.5) 50%, transparent 70%);
+}
+
+/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     animation-duration: 0.001ms !important;
     transition-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
   }
-  .brand-mark { animation: none !important; }
-  .progress-bar::after { display: none; }
+  .brand-mark, .progress-bar::after, .bg-blob { animation: none !important; }
 }

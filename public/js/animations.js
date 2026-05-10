@@ -193,28 +193,111 @@ window.fx = (function () {
     gsap.fromTo(panel, { x: 64, opacity: 0 }, { x: 0, opacity: 1, duration: 0.35, ease: 'power3.out' });
   }
 
-  /* Hover lift / press feedback for cards */
+  /* 3D tilt + radial glow follow on .card.hoverable.
+     Skipped on touch (where hover doesn't apply). */
   function bindCardHover(scope = document) {
-    if (!has()) return;
+    const isTouch = window.matchMedia('(hover: none)').matches;
+
     scope.querySelectorAll('.card.hoverable, .kanban-card').forEach((el) => {
       if (el.dataset.hoverBound) return;
       el.dataset.hoverBound = '1';
-      el.addEventListener('mouseenter', () => {
-        if (window.matchMedia('(hover: none)').matches) return;
-        gsap.to(el, { y: -2, duration: 0.18, ease: 'power2.out' });
+
+      // Touch: simple tap feedback
+      if (isTouch) {
+        el.addEventListener('pointerdown', () => {
+          el.style.transform = 'scale(0.98)';
+          el.style.transition = 'transform 0.12s ease';
+        });
+        const reset = () => {
+          el.style.transform = '';
+          el.style.transition = '';
+        };
+        el.addEventListener('pointerup', reset);
+        el.addEventListener('pointercancel', reset);
+        el.addEventListener('pointerleave', reset);
+        return;
+      }
+
+      const isCard = el.classList.contains('hoverable');
+
+      el.addEventListener('mousemove', (e) => {
+        const r = el.getBoundingClientRect();
+        const x = e.clientX - r.left;
+        const y = e.clientY - r.top;
+        const px = (x / r.width) * 100;
+        const py = (y / r.height) * 100;
+        el.style.setProperty('--mx', px + '%');
+        el.style.setProperty('--my', py + '%');
+
+        if (isCard && r.width > 220) {
+          // 3D tilt strength scales with distance from center
+          const tiltY = ((x / r.width) - 0.5) * 6;
+          const tiltX = -((y / r.height) - 0.5) * 6;
+          el.style.setProperty('--tilt-x', tiltX + 'deg');
+          el.style.setProperty('--tilt-y', tiltY + 'deg');
+        }
       });
+
       el.addEventListener('mouseleave', () => {
-        gsap.to(el, { y: 0, duration: 0.22, ease: 'power2.out' });
+        if (isCard) {
+          el.style.setProperty('--tilt-x', '0deg');
+          el.style.setProperty('--tilt-y', '0deg');
+        }
       });
+
       el.addEventListener('pointerdown', () => {
-        gsap.to(el, { scale: 0.985, duration: 0.08, ease: 'power1.out' });
+        if (!has()) return;
+        gsap.to(el, { scale: 0.985, duration: 0.1, ease: 'power1.out' });
       });
       el.addEventListener('pointerup', () => {
-        gsap.to(el, { scale: 1, duration: 0.18, ease: 'back.out(2)' });
+        if (!has()) return;
+        gsap.to(el, { scale: 1, duration: 0.22, ease: 'back.out(2)' });
       });
-      el.addEventListener('pointerleave', () => {
-        gsap.to(el, { scale: 1, duration: 0.18 });
+    });
+  }
+
+  /* Magnetic buttons — primary CTAs slightly chase the cursor */
+  function bindMagneticButtons(scope = document) {
+    if (window.matchMedia('(hover: none)').matches) return;
+    scope.querySelectorAll('.btn-primary, [data-magnetic]').forEach((el) => {
+      if (el.dataset.magBound) return;
+      el.dataset.magBound = '1';
+      el.setAttribute('data-magnetic', '');
+      el.addEventListener('mousemove', (e) => {
+        const r = el.getBoundingClientRect();
+        const dx = e.clientX - (r.left + r.width / 2);
+        const dy = e.clientY - (r.top + r.height / 2);
+        el.style.setProperty('--mx', dx * 0.18);
+        el.style.setProperty('--my', dy * 0.18);
       });
+      el.addEventListener('mouseleave', () => {
+        el.style.setProperty('--mx', 0);
+        el.style.setProperty('--my', 0);
+      });
+    });
+  }
+
+  /* Material-style click ripple on buttons + cards */
+  function bindRipples(scope = document) {
+    scope.querySelectorAll('.btn, .nav-link, .bottom-nav a, .kanban-card, .tab').forEach((el) => {
+      if (el.dataset.rippleBound) return;
+      el.dataset.rippleBound = '1';
+      el.addEventListener('pointerdown', (e) => {
+        const r = el.getBoundingClientRect();
+        const ripple = document.createElement('span');
+        ripple.className = 'ripple';
+        const size = Math.max(r.width, r.height);
+        ripple.style.width = ripple.style.height = size + 'px';
+        ripple.style.left = (e.clientX - r.left - size / 2) + 'px';
+        ripple.style.top = (e.clientY - r.top - size / 2) + 'px';
+        el.appendChild(ripple);
+        setTimeout(() => ripple.remove(), 700);
+      });
+      // Make sure host can position the absolute ripple
+      const cs = getComputedStyle(el);
+      if (cs.position === 'static') el.style.position = 'relative';
+      if (cs.overflow === 'visible' && !el.classList.contains('btn'))
+        el.style.overflow = 'hidden';
     });
   }
 
@@ -288,7 +371,8 @@ window.fx = (function () {
     countUp, pulse, shake,
     animateRings, animateProgress,
     modalIn, modalOut, drawerIn,
-    bindCardHover, moveNavIndicator,
+    bindCardHover, bindMagneticButtons, bindRipples,
+    moveNavIndicator,
     toastIn, toastOut,
     get reduceMotion() { return reduceMotion; },
   };

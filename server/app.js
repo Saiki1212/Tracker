@@ -17,6 +17,7 @@ const learningRoutes = require('./routes/learning');
 const noteRoutes = require('./routes/notes');
 const weeklyRoutes = require('./routes/weekly');
 const analyticsRoutes = require('./routes/analytics');
+const settingsRoutes = require('./routes/settings');
 
 const app = express();
 app.disable('x-powered-by');
@@ -42,6 +43,7 @@ app.use('/api/learning', auth, learningRoutes);
 app.use('/api/notes', auth, noteRoutes);
 app.use('/api/weekly', auth, weeklyRoutes);
 app.use('/api/analytics', auth, analyticsRoutes);
+app.use('/api/settings', auth, settingsRoutes);
 
 app.use((req, res, next) => {
   if (req.path.startsWith('/api/')) return res.status(404).json({ error: 'Not found' });
